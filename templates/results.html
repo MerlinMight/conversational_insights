@@ -1,0 +1,120 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcription Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="main-title">Transcription and Analysis Results</h1>
+
+        <div class="result-box">
+            <h3>Transcription</h3>
+            <p>{{ transcription }}</p>
+        </div>
+
+        <div class="result-box">
+            <h3>Metadata</h3>
+            <ul>
+                {% for key, value in metadata.items() %}
+                <li>
+                    <strong>{{ key }}:</strong>
+                    {% if value is mapping %}
+                    <ul>
+                        {% for sub_key, sub_value in value.items() %}
+                        <li>{{ sub_key }}: {{ sub_value }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    {{ value }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-box">
+            <h3>Extracted Topics</h3>
+            <ul>
+                {% for topic in topics %}
+                <li>{{ topic }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-box">
+            <h3>Sentiment and Emotion Analysis Results</h3>
+            <div class="plot">
+                <h4>Sentiment Distribution Per Speaker</h4>
+                <img src="{{ sentiment_plot }}" alt="Sentiment Distribution Plot">
+            </div>
+            <div class="emotion-plots-container">
+                <h4>Emotion Distribution Per Speaker</h4>
+                {% for plot in emotion_plots %}
+                <div class="emotion-plot">
+                    <img src="{{ plot }}" alt="Emotion Distribution Plot">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="result-box">
+            <h3>Conversation Type</h3>
+            <p>{{ conversation_type }}</p>
+        </div>
+
+        <div class="result-box">
+            <h3>Complaints</h3>
+            {% if complaints %}
+            <ul>
+                {% for complaint in complaints %}
+                <li>{{ complaint }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No complaints found! Everything seems good.</p>
+            {% endif %}
+        </div>
+
+        <div class="result-box">
+            <h3>Customer Satisfaction Score</h3>
+            {% if satisfaction_score %}
+            <p>{{ satisfaction_score }}%</p>
+            {% else %}
+            <p>N/A (Not applicable for this conversation type)</p>
+            {% endif %}
+        </div>
+
+        <div class="result-box">
+            <h3>Suggestions</h3>
+            <ul>
+                {% for suggestion in suggestions %}
+                <li>{{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-box">
+            <h3>Improvement Suggestions</h3>
+            {% if improvement_suggestions %}
+            <ul>
+                {% for suggestion in improvement_suggestions %}
+                <li>{{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No additional suggestions needed.</p>
+            {% endif %}
+        </div>
+
+        <a class="back-link" href="{{ url_for('index') }}">Upload another file</a>
+    </div>
+</body>
+
+</html>
+
